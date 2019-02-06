@@ -101,4 +101,4 @@ spec:
               - key: .htaccess
                 path: .htaccess
         {{- end }}
-      {{- include "drupal.imagePullSecrets" . | nindent 6 }}
+      {{ toYaml .Values.image.secrets | indent 10 }}
