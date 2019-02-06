@@ -101,4 +101,4 @@ spec:
               - key: .htaccess
                 path: .htaccess
         {{- end }}
-      {{ toYaml .Values.image.secrets | indent 10 }}
+      {{ toYaml .Values.imagePullSecrets | indent 10 }}
