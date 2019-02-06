@@ -10,7 +10,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: {{ .Values.drupal.externalPort }}
+  - port: 80
   selector:
     {{- include "drupal.release_labels" . | nindent 4 }}
     deployment: drupal
