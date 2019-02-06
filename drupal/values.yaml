@@ -216,3 +216,11 @@ elasticsearch:
 memcached:
   enabled: false
   maxItemMemory: 128
+
+drupal:
+  name: web
+  type: ClusterIP
+  url: http://my.host.com/
+  additionalHosts:
+  commonName:
+  externalPort: 80
