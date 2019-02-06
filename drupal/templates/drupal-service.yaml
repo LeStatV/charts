@@ -13,5 +13,5 @@ spec:
   - port: {{ .Values.drupal.externalPort }}
   selector:
     {{- include "drupal.release_labels" . | nindent 4 }}
-    deployment: drupal
+    deployment: {{ .Release.Name }}-drupal
     tier: "web"
