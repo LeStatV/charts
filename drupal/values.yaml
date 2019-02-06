@@ -10,9 +10,8 @@ environmentName: ""
 
 # Configure image pull secrets for the containers. This is not needed on GKE.
 # See https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-imagePullSecrets:
-  - name: gitlab-registry
-  
+imagePullSecrets: []
+
 # The app label added to our Kubernetes resources.
 app: drupal
 
@@ -225,3 +224,5 @@ drupal:
   additionalHosts:
   commonName:
   externalPort: 80
+  secrets:
+    - name: gitlab-registry
