@@ -7,7 +7,7 @@ metadata:
 spec:
   storageClassName: {{ .Values.publicFiles.storageClassName }}
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: {{ .Values.publicFiles.storage }}
@@ -23,7 +23,7 @@ metadata:
 spec:
   storageClassName: {{ .Values.privateFiles.storageClassName }}
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: {{ .Values.privateFiles.storage }}
@@ -41,7 +41,7 @@ metadata:
 spec:
   storageClassName: {{ .Values.referenceData.storageClassName }}
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: {{ .Values.referenceData.storage }}
@@ -58,7 +58,7 @@ metadata:
 spec:
   storageClassName: {{ .Values.shell.storageClassName }}
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: {{ .Values.referenceData.storage }}

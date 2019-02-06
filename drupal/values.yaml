@@ -1,7 +1,7 @@
 
 # Main domain of the cluster.
 # If using ambassador, subdomains of this domain will be created automatically for each environment.
-clusterDomain: "silta.wdr.io"
+clusterDomain: "abs.funs.net.ua"
 
 # An optional human-readable label for the environment, defaults to the release name.
 # We typically pass the branch name when we build dedicated environments per branch.
@@ -34,7 +34,7 @@ nginx:
   # Set of values to enable and use http basic authentication
   # It is implemented only for very basic protection (like web crawlers)
   basicauth:
-    enabled: true
+    enabled: false
 
     # Define username and password
     credentials:
@@ -121,7 +121,7 @@ php:
 
 # Configuration for everything that runs in shell container.
 shell:
-  enabled: true
+  enabled: false
 
   # Persistent storage for SSH fingerprint keys
   storage: 1M
@@ -138,17 +138,17 @@ shell:
 # Configure the volume used for Drupal public files.
 publicFiles:
   storage: 1Gi
-  storageClassName: nfs
+  storageClassName: gp2
 
 # Configure an optional volume used for Drupal private files.
 privateFiles:
   enabled: false
   storage: 1G
-  storageClassName: nfs
+  storageClassName: gp2
 
 # Configure reference data that will be used when creating new environments.
 referenceData:
-  enabled: true
+  enabled: false
   
   # The name of the environment from which reference data will be copied.
   referenceEnvironment: 'master'
