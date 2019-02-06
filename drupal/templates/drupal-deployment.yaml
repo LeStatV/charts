@@ -38,7 +38,7 @@ spec:
             command:
             - /bin/sh
             - -c
-            - drush check-bootstrap
+            - drush check-bootstrap:root
           periodSeconds: 3
         resources:
           {{- .Values.php.resources | toYaml | nindent 10 }}
