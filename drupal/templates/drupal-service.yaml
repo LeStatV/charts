@@ -5,13 +5,14 @@ metadata:
   labels:
     {{- include "drupal.release_labels" . | nindent 4 }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   type: ClusterIP
   ports:
   - port: {{ .Values.drupal.externalPort }}
+    targetPort: {{ .Values.service.internalPort }}
+    protocol: TCP
+    name: {{ .Values.drupal.name }}
   selector:
     {{- include "drupal.release_labels" . | nindent 4 }}
-    deployment: {{ .Release.Name }}-drupal
-    tier: "web"
+    tier: {{ .Values.drupal.tier }}

@@ -218,11 +218,13 @@ memcached:
   maxItemMemory: 128
 
 drupal:
-  name: web
+  name: drupal
+  tier: web
   type: ClusterIP
   url: http://my.host.com/
   additionalHosts:
   commonName:
+  internalPort: 80
   externalPort: 80
   secrets:
     - name: gitlab-registry
