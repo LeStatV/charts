@@ -10,7 +10,7 @@ spec:
   type: ClusterIP
   ports:
   - port: {{ .Values.drupal.externalPort }}
-    targetPort: {{ .Values.service.internalPort }}
+    targetPort: {{ .Values.drupal.internalPort }}
     protocol: TCP
     name: {{ .Values.drupal.name }}
   selector:
