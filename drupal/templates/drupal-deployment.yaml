@@ -28,6 +28,15 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
         - {{ include "drupal.wait-for-db-command" . | quote }}
+      - name: take-data-dir-ownership
+        image: alpine:3.6
+        command:
+        - chown
+        - -R  
+        - 82:82
+        - /var/www/html/web/sites/default/files
+        volumeMounts:
+          {{- include "drupal.volumeMounts" . | nindent 10 }}
       containers:
       # php-fpm container.
       - name: php
