@@ -1,0 +1,39 @@
+{{- if .Values.referenceData.enabled }}
+{{- if eq .Values.referenceData.referenceEnvironment .Values.environmentName }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-refdata
+  labels:
+    {{- include "drupal.release_labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.referenceData.schedule | quote }}
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: reference-data-cron
+            {{- include "drupal.php-container" . | nindent 12 }}
+            volumeMounts:
+              {{- include "drupal.volumeMounts" . | nindent 14 }}
+              - name: reference-data-volume
+                mountPath: /var/www/html/reference-data
+            command: ["/bin/sh", "-c"]
+            args:
+              - {{ .Values.referenceData.command | quote }}
+            resources:
+              {{- .Values.php.resources | toYaml | nindent 14 }}
+          restartPolicy: OnFailure
+          volumes:
+            {{- include "drupal.volumes" . | nindent 12 }}
+            - name: reference-data-volume
+              persistentVolumeClaim:
+                claimName: {{ include "drupal.referenceEnvironment" . }}-reference-data
+
+
+          {{- include "drupal.imagePullSecrets" . | nindent 10 }}
+{{- end }}
+{{- end }}
+---

@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-drupal
+  labels:
+    {{- include "drupal.release_labels" . | nindent 4 }}
+    tier: "{{ .Values.drupal.tier }}"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      {{- include "drupal.release_labels" . | nindent 6 }}
+      deployment: drupal
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        {{- include "drupal.release_labels" . | nindent 8 }}
+        deployment: drupal
+        tier: "{{ .Values.drupal.tier }}"
+    spec:
+      initContainers:
+      - name: wait-for-db
+        {{ include "drupal.php-container" . | nindent 8 }}
+        command: ["/bin/sh", "-c"]
+        args:
+        - {{ include "drupal.wait-for-db-command" . | quote }}
+      - name: take-data-dir-ownership
+        image: alpine:3.6
+        command:
+        - chown
+        - -R  
+        - 82:82
+        - /var/www/html/web/sites/default/files
+        volumeMounts:
+          {{- include "drupal.volumeMounts" . | nindent 10 }}
+      containers:
+      # php-fpm container.
+      - name: php
+        {{- include "drupal.php-container" . | nindent 8}}
+        volumeMounts:
+          {{- include "drupal.volumeMounts" . | nindent 10 }}
+        livenessProbe:
+          tcpSocket:
+            port: 9000
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - drush check-bootstrap:root
+          periodSeconds: 3
+        resources:
+          {{- .Values.php.resources | toYaml | nindent 10 }}
+
+      # Nginx container
+      - name: nginx
+        image: {{ .Values.nginx.image | quote }}
+        resources:
+          requests:
+            cpu: "50m"
+        env:
+        ports:
+        - containerPort: {{ .Values.drupal.internalPort }}
+          name: "{{ .Values.drupal.name }}"
+        volumeMounts:
+        - name: drupal-public-files
+          mountPath: /var/www/html/web/sites/default/files
+          readOnly: true
+        - name: nginx-conf
+          mountPath: /etc/nginx/nginx.conf # mount nginx-conf configmap volume to /etc/nginx
+          readOnly: true
+          subPath: nginx_conf
+        - name: nginx-conf
+          mountPath: /etc/nginx/conf.d/drupal.conf # mount nginx-conf configmap volume to /etc/nginx
+          readOnly: true
+          subPath: drupal_conf
+        {{- if .Values.nginx.basicauth.enabled }}
+        - name: nginx-basicauth
+          mountPath: /etc/nginx/.htaccess
+          readOnly: true
+          subPath: .htaccess
+        {{- end }}
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.drupal.internalPort }}
+        readinessProbe:
+          httpGet:
+            path: /robots.txt
+            port: {{ .Values.drupal.internalPort }}
+          periodSeconds: 3
+          timeoutSeconds: 3
+        resources:
+          {{- .Values.nginx.resources | toYaml | nindent 10 }}
+
+      volumes:
+        {{- include "drupal.volumes" . | nindent 8}}
+        - name: nginx-conf
+          configMap:
+            name: {{ .Release.Name }}-nginx-conf
+            items:
+              - key: nginx_conf
+                path: nginx_conf
+              - key: drupal_conf
+                path: drupal_conf
+        {{- if .Values.nginx.basicauth.enabled }}
+        - name: nginx-basicauth
+          secret:
+            secretName: {{ .Release.Name }}-secrets-drupal
+            items:
+              - key: .htaccess
+                path: .htaccess
+        {{- end }}
+      imagePullSecrets:
+      {{ toYaml .Values.drupal.secrets | nindent 6 }}

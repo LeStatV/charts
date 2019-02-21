@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-public-files
+  labels:
+    {{- include "drupal.release_labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.publicFiles.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.publicFiles.storage }}
+---
+{{- if .Values.privateFiles.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-private-files
+  labels:
+    app: {{ .Values.app | quote }}
+    release: {{ .Release.Name }}
+spec:
+  storageClassName: {{ .Values.privateFiles.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.privateFiles.storage }}
+{{- end }}
+---
+{{- if .Values.referenceData.enabled }}
+{{- if eq .Values.referenceData.referenceEnvironment .Values.environmentName }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "drupal.referenceEnvironment" . }}-reference-data
+  labels:
+    app: {{ .Values.app | quote }}
+    release: {{ .Release.Name }}
+spec:
+  storageClassName: {{ .Values.referenceData.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.referenceData.storage }}
+{{- end }}
+{{- end }}
+---
+{{- if .Values.shell.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-shell-keys
+  labels:
+    {{- include "drupal.release_labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.shell.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.referenceData.storage }}
+{{- end }}

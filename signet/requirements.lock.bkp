@@ -1,0 +1,9 @@
+dependencies:
+- name: mariadb
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 4.4.2
+- name: memcached
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 2.3.1
+digest: sha256:fa461d4a18989ac09f4b956a570eb145f156a5207d1eb894ecb9686e5f274201
+generated: 2018-11-21T15:49:00.515486879Z

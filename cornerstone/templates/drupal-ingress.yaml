@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-drupal
+  labels:
+    {{- include "drupal.release_labels" . | nindent 4 }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+  - hosts:
+{{- if .Values.drupal.commonName }}
+    - {{ template "hostname" .Values.drupal.commonName }}
+{{- end }}
+    - {{ template "hostname" .Values.drupal.url }}
+{{- if .Values.drupal.additionalHosts }}
+{{- range $host := .Values.drupal.additionalHosts }}
+    - {{ $host }}
+{{- end -}}
+{{- end }}
+    secretName: {{ .Release.Name }}-drupal-tls
+  rules:
+  - host: {{ template "hostname" .Values.drupal.url }}
+    http:
+      &httpRule
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-drupal
+          servicePort: {{ .Values.drupal.externalPort }}
+{{- if .Values.drupal.commonName }}
+  - host: {{ template "hostname" .Values.drupal.commonName }}
+    http:
+      <<: *httpRule
+{{- end -}}
+{{- if .Values.drupal.additionalHosts }}
+{{- range $host := .Values.drupal.additionalHosts }}
+  - host: {{ $host }}
+    http:
+      <<: *httpRule
+{{- end -}}
+{{- end -}}
