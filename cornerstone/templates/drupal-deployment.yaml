@@ -25,7 +25,6 @@ spec:
       initContainers:
       - name: take-data-dir-ownership
         image: alpine:3.6
-        env: {{ include "drupal.env" . }}
         command: ["/bin/sh", "-c"]
         args:
         - {{ include "drupal.assign-public-files" . | quote }}
