@@ -142,13 +142,11 @@ done
 {{- end }}
 
 {{- define "drupal.assign-public-files" }}
-mkdir -p /var/www/html/files/pulse
-mkdir -p /var/www/html/files/default
-mkdir -p /var/www/html/web/sites/pulse/files
-mkdir -p /var/www/html/web/sites/default/files
+mkdir -p /var/www/html/files/pulse/files
+mkdir -p /var/www/html/files/default/files
 chown -R 82:82 /var/www/html/files
-ln -s /var/www/html/files/pulse /var/www/html/web/sites/pulse/files
-ln -s /var/www/html/files/default /var/www/html/web/sites/default/files
+ln -s /var/www/html/files/pulse/files/ /var/www/html/web/sites/pulse/
+ln -s /var/www/html/files/default/files/ /var/www/html/web/sites/default/
 chown -R 82:82 /var/www/html/web/sites/pulse/files
 chown -R 82:82 /var/www/html/web/sites/default/files
 {{- end }}
