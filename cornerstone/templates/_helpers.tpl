@@ -143,6 +143,8 @@ done
 
 {{- define "drupal.assign-public-files" }}
 chown -R 82:82 /var/www/html/files
+ls -la /var/www/html/files
+ls -ls /var/www/html/web/sites/pulse/
 mkdir -p /var/www/html/files/pulse
 mount --bind /var/www/html/files/pulse /var/www/html/web/sites/pulse/files
 mount --bind /var/www/html/files/default /var/www/html/web/sites/default/files
