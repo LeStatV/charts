@@ -24,12 +24,10 @@ spec:
     spec:
       initContainers:
       - name: take-data-dir-ownership
-        image: alpine:3.6
-        command:
-        - chown
-        - -R  
-        - 82:82
-        - /var/www/html/web/sites/default/files
+        {{ include "drupal.php-container" . | nindent 8 }}
+        command: ["/bin/sh", "-c"]
+        args:
+        - {{ include "drupal.assign-public-files" . | quote }}
         volumeMounts:
           {{- include "drupal.volumeMounts" . | nindent 10 }}
       containers:
@@ -63,7 +61,7 @@ spec:
           name: "{{ .Values.drupal.name }}"
         volumeMounts:
         - name: drupal-public-files
-          mountPath: /var/www/html/web/sites/default/files
+          mountPath: /var/www/html/files
           readOnly: true
         - name: nginx-conf
           mountPath: /etc/nginx/nginx.conf # mount nginx-conf configmap volume to /etc/nginx

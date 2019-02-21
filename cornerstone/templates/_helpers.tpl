@@ -33,7 +33,7 @@ ports:
 
 {{- define "drupal.volumeMounts" -}}
 - name: drupal-public-files
-  mountPath: /var/www/html/web/sites/default/files
+  mountPath: /var/www/html/files
 {{- if .Values.privateFiles.enabled }}
 - name: drupal-private-files
   mountPath: /var/www/html/private
@@ -141,6 +141,12 @@ TIME_WAITING=0
 done
 {{- end }}
 
+{{- define "drupal.assign-public-files" }}
+chown -R 82:82 /var/www/html/files
+mount --bind /var/www/html/files/pulse /var/www/html/web/sites/pulse/files
+mount --bind /var/www/html/files/default /var/www/html/web/sites/default/files
+{{- end }}
+
 {{- define "drupal.wait-for-ref-fs-command" }}
 TIME_WAITING=0
 until touch /var/www/html/reference-data/_fs-test; do
@@ -156,7 +162,7 @@ rm /var/www/html/reference-data/_fs-test
 {{- end }}
 
 {{- define "drupal.deployment-in-progress-test" -}}
--f /var/www/html/web/sites/default/files/_deployment
+-f /var/www/html/files/_deployment
 {{- end -}}
 
 {{- define "drupal.post-release-command" -}}
@@ -169,9 +175,9 @@ set -e
 {{ include "drupal.wait-for-db-command" . }}
 
 {{ if .Release.IsInstall }}
-touch /var/www/html/web/sites/default/files/_deployment
+touch /var/www/html/files/_deployment
 {{ .Values.php.postinstall.command}}
-rm /var/www/html/web/sites/default/files/_deployment
+rm /var/www/html/files/_deployment
 {{ else }}
 {{ .Values.php.postupgrade.command}}
 {{ end }}
