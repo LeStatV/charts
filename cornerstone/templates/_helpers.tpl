@@ -94,7 +94,7 @@ imagePullSecrets:
 - name: DB_PULSE_USER
   value: "{{ .Values.db.pulse.user }}"
 - name: DB_PULSE_PASS
-  value: "{{ .Values.db.pulse.pass }}"
+  value: "{{ .Values.db.pulse.pass }}" | b64enc
 {{- if .Values.memcached.enabled }}
 - name: MEMCACHED_HOST
   value: {{ .Release.Name }}-memcached
