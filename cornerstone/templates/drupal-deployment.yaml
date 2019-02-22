@@ -73,6 +73,11 @@ spec:
         volumeMounts:
         - name: drupal-public-files
           mountPath: /var/www/html/web/sites/default/files
+          subPath: default
+          readOnly: true
+        - name: drupal-public-files
+          mountPath: /var/www/html/web/sites/pulse/files
+          subPath: pulse
           readOnly: true
         - name: nginx-conf
           mountPath: /etc/nginx/nginx.conf # mount nginx-conf configmap volume to /etc/nginx
