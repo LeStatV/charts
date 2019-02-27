@@ -396,7 +396,23 @@ data:
         ## Any other attempt to access PHP files returns a 404.
         location ~* ^.+\.php$ {
             return 404;
-        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-                                                                                                                                                                                                                                                                                                                                                                    
+        }
+
+        location ^~ /simplesaml {
+            alias /var/www/html/vendor/simplesamlphp/simplesamlphp/www;
+
+            # The prefix must match the baseurlpath configuration option
+            location ~ ^(?<prefix>/simplesaml)(?<phpfile>.+?\.php)(?<pathinfo>/.*)?$ {
+                include fastcgi.conf;
+                fastcgi_pass php;
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME $document_root$phpfile;
+
+                # Must be prepended with the baseurlpath
+                fastcgi_param SCRIPT_NAME /simplesaml$phpfile;
+
+                fastcgi_param PATH_INFO $pathinfo if_not_empty;
+            }
+        }                                                                                                                                                                                                                                                                                                                                                   
     }
 
