@@ -134,7 +134,7 @@ data:
     $config['auth.adminpassword'] = 'l5ief39h1vqpq5w52s6fumyk59j8s5w2'; // @TODO replace it and take from env
     setcookie('NO_CACHE', '1');
     $config['store.type'] = 'sql';
-    $config['store.sql.dsn'] = sprintf('mysql:host=%s;port=%s;dbname=%s', {{ .Values.db.host }}, "3306", {{ .Values.db.signet.name }});
+    $config['store.sql.dsn'] = sprintf('mysql:host=%s;port=%s;dbname=%s', '{{ .Values.db.host }}', '3306', '{{ .Values.db.signet.name }}');
     $config['store.sql.username'] = {{ .Values.db.signet.user }};
     $config['store.sql.password'] = {{ .Values.db.signet.pass }};
     $config['store.sql.prefix'] = 'simplesaml';
