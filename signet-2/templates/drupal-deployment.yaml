@@ -23,7 +23,12 @@ spec:
         tier: "{{ .Values.drupal.tier }}"
     spec:
       initContainers:
-      - name: take-data-dir-ownership-default
+      - name: wait-for-db
+        {{ include "drupal.php-container" . | nindent 8 }}
+        command: ["/bin/sh", "-c"]
+        args:
+        - {{ include "drupal.wait-for-db-command" . | quote }}
+      - name: take-data-dir-ownership
         image: alpine:3.6
         command:
         - chown
@@ -64,7 +69,6 @@ spec:
         volumeMounts:
         - name: drupal-public-files
           mountPath: /var/www/html/web/sites/default/files
-          subPath: default
           readOnly: true
         - name: nginx-conf
           mountPath: /etc/nginx/nginx.conf # mount nginx-conf configmap volume to /etc/nginx

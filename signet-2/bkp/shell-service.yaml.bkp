@@ -1,0 +1,18 @@
+{{- if .Values.shell.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "drupal.environment.hostname" . }}-shell
+  labels:
+    {{- include "drupal.release_labels" . | nindent 4 }}
+    service: shell
+spec:
+  type: NodePort
+  ports:
+    - name: ssh
+      port: 22
+  selector:
+    {{- include "drupal.release_labels" . | nindent 4 }}
+    service: shell
+{{- end }}
+---

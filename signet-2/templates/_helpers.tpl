@@ -34,7 +34,6 @@ ports:
 {{- define "drupal.volumeMounts" -}}
 - name: drupal-public-files
   mountPath: /var/www/html/web/sites/default/files
-  subPath: default
 {{- if .Values.privateFiles.enabled }}
 - name: drupal-private-files
   mountPath: /var/www/html/private
@@ -84,14 +83,19 @@ imagePullSecrets:
 {{- define "drupal.env" }}
 - name: SILTA_CLUSTER
   value: "1"
+{{- if .Values.mariadb.enabled }}
+- name: DB_USER
+  value: "{{ .Values.mariadb.db.user }}"
+- name: DB_NAME
+  value: "{{ .Values.mariadb.db.name }}"
 - name: DB_HOST
-  value: "{{ .Values.db.host }}"
-- name: DB_SIGNET_NAME
-  value: "{{ .Values.db.signet.name }}"
-- name: DB_SIGNET_USER
-  value: "{{ .Values.db.signet.user }}"
-- name: DB_SIGNET_PASS
-  value: "{{ .Values.db.signet.pass | b64enc }}"
+  value: {{ .Release.Name }}-mariadb
+- name: DB_PASS
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-mariadb
+      key: mariadb-password
+{{- end }}
 {{- if .Values.memcached.enabled }}
 - name: MEMCACHED_HOST
   value: {{ .Release.Name }}-memcached

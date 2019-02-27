@@ -1,9 +1,5 @@
 dependencies:
-- name: mariadb
-  version: 4.x.x
+- name: memcached
+  version: 2.3.1
   repository: https://kubernetes-charts.storage.googleapis.com/
-  condition: mariadb.enabled,drupal.mariadb.enabled,global.mariadb.enabled
-- name: redis
-  version: 6.0.1
-  repository: https://kubernetes-charts.storage.googleapis.com/
-  condition: redis.enabled
+  condition: memcached.enabled
