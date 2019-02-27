@@ -138,3 +138,41 @@ data:
     $config['store.sql.username'] = '{{ .Values.db.signet.user }}';
     $config['store.sql.password'] = '{{ .Values.db.signet.pass }}';
     $config['store.sql.prefix'] = 'simplesaml';
+
+  authsources_php: |
+    <?php
+    $config = array(
+      'admin' => array(
+          'core:AdminPassword',
+      ),
+      'drupal-userpass' => array(
+        'drupalauth:External',
+
+        // The filesystem path of the Drupal directory.
+        'drupalroot' => '/var/www/html/web',
+
+        // Whether to turn on debug
+        'debug' => true,
+        // the URL of the Drupal logout page
+        'drupal_logout_url' => $_SERVER['HTTP_HOST'].'/user/logout',
+
+        // the URL of the Drupal login page
+        'drupal_login_url' => $_SERVER['HTTP_HOST'].'/user',
+      ),
+    );
+
+  saml20_sp_remote_php: |
+    <?php
+    $metadata['dev.pulse.cornerstone.abs.funs.net.ua/simplesaml/module.php/saml/sp/metadata.php/abs-sp'] = array(
+        'AssertionConsumerService' => 'http://dev.pulse.cornerstone/simplesaml/module.php/saml/sp/saml2-acs.php/abs-sp',
+        'SingleLogoutService' => 'http://dev.pulse.cornerstone/simplesaml/module.php/saml/sp/saml2-logout.php/abs-sp',
+    );
+
+  saml20_idp_hosted_php: |
+    <?php
+    $metadata['__DYNAMIC:1__'] = array(
+      'host' => '__DEFAULT__',
+      'privatekey' => 'saml.pem',
+      'certificate' => 'saml.crt',
+      'auth' => 'drupal-userpass',
+    );
