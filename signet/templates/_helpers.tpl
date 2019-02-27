@@ -76,6 +76,12 @@ ports:
         path: php-fpm_conf
       - key: www_conf
         path: www_conf
+- name: ssp-conf
+  configMap:
+    name: {{ .Release.Name }}-ssp-conf
+    items:
+      - key: config_php
+        path: config_php
 {{- end }}
 
 {{- define "drupal.imagePullSecrets" }}
