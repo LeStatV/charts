@@ -5,7 +5,8 @@ metadata:
   labels:
     {{- include "drupal.release_labels" . | nindent 4 }}
 data:
-  config_php: |<?php
+  config_php: |
+<?php
 /*
  * The configuration of SimpleSAMLphp
  *
