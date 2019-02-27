@@ -51,6 +51,10 @@ ports:
   mountPath: /etc/php7/php-fpm.d/www.conf
   readOnly: true
   subPath: www_conf
+- name: idp-conf
+  mountPath: /var/www/html/vendor/simplesamlphp/simplesamlphp/config/config.php
+  readOnly: true
+  subPath: config_php
 {{- end }}
 
 {{- define "drupal.volumes" -}}
@@ -72,6 +76,12 @@ ports:
         path: php-fpm_conf
       - key: www_conf
         path: www_conf
+- name: idp-conf
+  configMap:
+    name: {{ .Release.Name }}-idp-conf
+    items:
+      - key: config_php
+        path: config_php
 {{- end }}
 
 {{- define "drupal.imagePullSecrets" }}
