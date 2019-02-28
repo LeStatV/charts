@@ -164,9 +164,9 @@ data:
 
   saml20_sp_remote_php: |
     <?php
-    $metadata['http://dev.pulse.cornerstone.abs.funs.net.ua/simplesaml/module.php/saml/sp/metadata.php/abs-sp'] = array(
-      'AssertionConsumerService' => 'http://dev.pulse.cornerstone.abs.funs.net.ua/simplesaml/module.php/saml/sp/saml2-acs.php/abs-sp',
-      'SingleLogoutService' => 'http://dev.pulse.cornerstone.abs.funs.net.ua/simplesaml/module.php/saml/sp/saml2-logout.php/abs-sp',
+    $metadata['http://lookinside.appdev.american.bible/simplesaml/module.php/saml/sp/metadata.php/abs-sp'] = array(
+      'AssertionConsumerService' => 'http://lookinside.appdev.american.bible/simplesaml/module.php/saml/sp/saml2-acs.php/abs-sp',
+      'SingleLogoutService' => 'http://lookinside.appdev.american.bible/simplesaml/module.php/saml/sp/saml2-logout.php/abs-sp',
     );
 
   saml20_idp_hosted_php: |
