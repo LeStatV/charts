@@ -165,13 +165,35 @@ data:
 
   saml20_idp_remote_php: |
     <?php
-    $metadata["{{ .Values.idp.host }}/simplesaml/saml2/idp/metadata.php"] = array(
-      'name' => array(
-              'en' => 'Signet IdP',
+    $metadata['{{ .Values.idp.host }}/simplesaml/saml2/idp/metadata.php'] = array (
+      'metadata-set' => 'saml20-idp-remote',
+      'entityid' => '{{ .Values.idp.host }}/simplesaml/saml2/idp/metadata.php',
+      'SingleSignOnService' => 
+      array (
+        0 => 
+        array (
+          'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+          'Location' => '{{ .Values.idp.host }}/simplesaml/saml2/idp/SSOService.php',
+        ),
       ),
-      'description'          => 'Signet IdP server',
-      'SingleSignOnService'  => "{{ .Values.idp.host }}/simplesaml/saml2/idp/SSOService.php",
-      'SingleLogoutService'  => "{{ .Values.idp.host }}/simplesaml/saml2/idp/SingleLogoutService.php",
-      'privatekey' => 'saml.pem',
-      'certificate' => 'saml.crt',
+      'SingleLogoutService' => 
+      array (
+        0 => 
+        array (
+          'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+          'Location' => '{{ .Values.idp.host }}/simplesaml/saml2/idp/SingleLogoutService.php',
+        ),
+      ),
+      'certData' => 'MIIDRDCCAiwCCQCeGa9BI+xBITANBgkqhkiG9w0BAQsFADBkMQswCQYDVQQGEwJVUzELMAkGA1UECAwCUEExFTATBgNVBAcMDFBoaWxhZGVscGhpYTEMMAoGA1UECgwDQUJTMSMwIQYDVQQDDBpkZXYuc2lnbmV0LmFicy5mdW5zLm5ldC51YTAeFw0xOTAyMjgxNTM2MzJaFw0yOTAyMjcxNTM2MzJaMGQxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJQQTEVMBMGA1UEBwwMUGhpbGFkZWxwaGlhMQwwCgYDVQQKDANBQlMxIzAhBgNVBAMMGmRldi5zaWduZXQuYWJzLmZ1bnMubmV0LnVhMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4u83gRaqXcTZ9osCpp4yJHa5QCjXUpfze5iWAwtOcVBUkZt5fW4/86kRmZ3BNWytARILrVXezNp7AH+xNKVSd9A8ShdDzxq3Y9fjpi0Iqo9eH29IMf84S1IxIHvlAlobDSxzs73sNcNpqZVkmh5krOLLK7Ns88FZxw+eYNwMkr+uKpDVzegMarpnYEnQr+DB+wVDXI6SxA8lSbPD76w4c5a5g7bpEJ3WbmIoTzZgZK2kCnrvwALJ710GReHd6bz3G5qP4+rZ8zg9vX9dN272OAtRtvl04ILMlRQxeDHMfpGLrhr+PhZ+lTJ/xLUKas0oKITDB/gogEQhtHsHAJw9zwIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQDOk+9vEmbh+3VGPJxE5Ol9tC2nmpizl4lOa8a244zwsvCZooyzbKjd3t7MGm9GCQ2P2G6acILgEeQXc4oasCiysk6CBc7FFFhIEe1tV5djdRW0v/cPSpVBZwhBB/TRS/yTljQpN9yLBBdABhrpdIbrNCiikzcmoEfONzoxwnRrFExcXcKXMoLVtZRG3vKgau07mP8DX3anwl7VN5qYzc94vUZe+PU0vb1EMmItBFCdmj9Eczj3C6WNW0GaQaTLFCREb1sKiMer4EY3UkRoO8gIAudqaYrfAQiWbho6K80/RExNQgQBqHCFJotGCRZ4w7sON+M4Glkp4j3D/l9oM0iG',
+      'NameIDFormat' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
+      'contacts' => 
+      array (
+        0 => 
+        array (
+          'emailAddress' => 'ynikitin@americanbible.org',
+          'contactType' => 'technical',
+          'givenName' => 'Yevgen',
+          'surName' => 'Nikitin',
+        ),
+      ),
     );
