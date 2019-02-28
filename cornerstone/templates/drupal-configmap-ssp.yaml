@@ -165,13 +165,13 @@ data:
 
   saml20_idp_remote_php: |
     <?php
-    $metadata["http://{{ .Values.idp.host }}/simplesaml/saml2/idp/metadata.php"] = array(
+    $metadata["{{ .Values.idp.host }}/simplesaml/saml2/idp/metadata.php"] = array(
       'name' => array(
               'en' => 'Signet IdP',
       ),
       'description'          => 'Signet IdP server',
-      'SingleSignOnService'  => "http://{{ .Values.idp.host }}/simplesaml/saml2/idp/SSOService.php",
-      'SingleLogoutService'  => "http://{{ .Values.idp.host }}/simplesaml/saml2/idp/SingleLogoutService.php",
+      'SingleSignOnService'  => "{{ .Values.idp.host }}/simplesaml/saml2/idp/SSOService.php",
+      'SingleLogoutService'  => "{{ .Values.idp.host }}/simplesaml/saml2/idp/SingleLogoutService.php",
       'privatekey' => 'saml.pem',
       'certificate' => 'saml.crt',
     );
