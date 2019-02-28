@@ -54,6 +54,22 @@ ports:
   mountPath: /etc/php7/php-fpm.d/www.conf
   readOnly: true
   subPath: www_conf
+- name: idp-conf
+  mountPath: /var/www/html/vendor/simplesamlphp/simplesamlphp/config/config.php
+  readOnly: true
+  subPath: config_php
+- name: idp-conf
+  mountPath: /var/www/html/vendor/simplesamlphp/simplesamlphp/config/authsources.php
+  readOnly: true
+  subPath: authsources_php
+- name: idp-conf
+  mountPath: /var/www/html/vendor/simplesamlphp/simplesamlphp/metadata/saml20-sp-hosted.php
+  readOnly: true
+  subPath: saml20_sp_hosted_php
+- name: idp-conf
+  mountPath: /var/www/html/vendor/simplesamlphp/simplesamlphp/metadata/saml20-idp-remote.php
+  readOnly: true
+  subPath: saml20_idp_remote_php
 {{- end }}
 
 {{- define "drupal.volumes" -}}
@@ -75,6 +91,18 @@ ports:
         path: php-fpm_conf
       - key: www_conf
         path: www_conf
+- name: idp-conf
+  configMap:
+    name: {{ .Release.Name }}-idp-conf
+    items:
+      - key: config_php
+        path: config_php
+      - key: authsources_php
+        path: authsources_php
+      - key: saml20_sp_hosted_php
+        path: saml20_sp_hosted_php
+      - key: saml20_idp_remote_php
+        path: saml20_idp_remote_php
 {{- end }}
 
 {{- define "drupal.imagePullSecrets" }}

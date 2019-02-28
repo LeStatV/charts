@@ -235,3 +235,6 @@ db:
     name: pulse
     user: pulse
     pass: pulse
+
+idp:
+  host: my.host.com
