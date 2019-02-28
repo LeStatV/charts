@@ -138,6 +138,7 @@ data:
     $config['store.sql.username'] = '{{ .Values.db.signet.user }}';
     $config['store.sql.password'] = '{{ .Values.db.signet.pass }}';
     $config['store.sql.prefix'] = 'simplesaml';
+    $config['enable.saml20-idp'] = TRUE;
 
   authsources_php: |
     <?php
