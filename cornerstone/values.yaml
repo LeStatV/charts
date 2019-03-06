@@ -238,3 +238,10 @@ db:
 
 idp:
   host: my.host.com
+
+s3:
+  pulse:
+    bucket_name: s3_dummy_name
+    region_name: s3_dummy_region
+    access_key: s3_dummy_access_key
+    secret_key: s3_dummy_secret_key

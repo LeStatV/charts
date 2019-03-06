@@ -131,6 +131,14 @@ imagePullSecrets:
 - name: ELASTIC_HOST
   value: {{ .Release.Name }}-elastic
 {{- end }}
+- name: S3_BUCKET_NAME
+  value: "{{ .Values.s3.pulse.bucket_name }}"
+- name: S3_REGION_NAME
+  value: "{{ .Values.s3.pulse.region_name }}"
+- name: S3_ACCESS_KEY
+  value: "{{ .Values.s3.pulse.access_key }}"
+- name: S3_SECRET_KEY
+  value: "{{ .Values.s3.pulse.secret_key }}"
 - name: HASH_SALT
   valueFrom:
     secretKeyRef:

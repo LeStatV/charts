@@ -155,7 +155,7 @@ data:
 
   saml20_sp_hosted_php: |
     <?php
-    $host = preg_replace('#^https?://#', '', rtrim('{{ .Values.drupal.url }}','/'))
+    $host = preg_replace('#^https?://#', '', rtrim('{{ .Values.drupal.url }}','/'));
     $metadata["{{ .Values.drupal.url }}/simplesaml"] = array(
       'saml:SP',
       'host' => $host,
