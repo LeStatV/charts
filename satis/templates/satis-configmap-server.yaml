@@ -18,7 +18,7 @@ data:
       "homepage": "https://gitlab.americanbible.org",
       "repositories": [
           {
-              "type": "git",
+              "type": "gitlab",
               "url": "git@gitlab.americanbible.org:ts-eng/abs_contact.git"
           }
       ],
