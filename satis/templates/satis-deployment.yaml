@@ -40,7 +40,7 @@ spec:
           {{- include "satis.volumeMounts" . | nindent 10 }}
         livenessProbe:
           tcpSocket:
-            port: 9000
+            port: 80
         readinessProbe:
           exec:
             command:
