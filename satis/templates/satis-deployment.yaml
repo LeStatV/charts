@@ -26,17 +26,9 @@ spec:
       - name: composer-add-gitlab-key
         {{- include "satis.satis-container" . | nindent 8}}
         command:
-        - composer
-        - config
-        - -g
-        - gitlab-token.{{ .Values.composer.gitlab_host }}
-        - {{ .Values.composer.gitlab_token }}
-        - "&&"
-        - composer
-        - config
-        - -g
-        - gitlab-domains
-        - {{ .Values.composer.gitlab_host }}
+        - /bin/sh
+        - -c
+        args: "composer config -g gitlab-token.{{ .Values.composer.gitlab_host }} {{ .Values.composer.gitlab_token }} && composer config -g gitlab-domains {{ .Values.composer.gitlab_host }}"
         volumeMounts:
           {{- include "satis.volumeMounts" . | nindent 10 }}
       containers:
