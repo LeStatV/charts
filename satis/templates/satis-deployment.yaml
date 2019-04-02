@@ -23,13 +23,22 @@ spec:
         tier: "{{ .Values.satis.tier }}"
     spec:
       initContainers:
-      - name: composer-add-gitlab-key
+      - name: composer-add-gitlab-token
         {{- include "satis.satis-container" . | nindent 8}}
         command:
-        - /bin/sh
-        - -c
-        args:
-        - composer config -g gitlab-token.{{ .Values.composer.gitlab_host }} {{ .Values.composer.gitlab_token }} ; composer config -g gitlab-domains {{ .Values.composer.gitlab_host }}
+        - composer
+        - config
+        - -g
+        - gitlab-token.{{ .Values.composer.gitlab_host }}
+        - {{ .Values.composer.gitlab_token }}
+      - name: composer-add-gitlab-domains
+        {{- include "satis.satis-container" . | nindent 8}}
+        command:
+        - composer
+        - config
+        - -g
+        - gitlab-domains
+        - {{ .Values.composer.gitlab_host }}
         volumeMounts:
           {{- include "satis.volumeMounts" . | nindent 10 }}
       containers:
