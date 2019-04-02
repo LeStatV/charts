@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-satis
+  labels:
+    {{- include "satis.release_labels" . | nindent 4 }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    heritage: {{ .Release.Service }}
+spec:
+  type: ClusterIP
+  ports:
+  - port: {{ .Values.satis.externalPort }}
+    targetPort: {{ .Values.satis.internalPort }}
+    protocol: TCP
+    name: {{ .Values.satis.name }}
+  selector:
+    {{- include "satis.release_labels" . | nindent 4 }}
+    tier: {{ .Values.satis.tier }}

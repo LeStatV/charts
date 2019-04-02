@@ -9,4 +9,7 @@ helm package cornerstone --destination docs
 helm dependency build signet
 helm package signet --destination docs
 
+helm dependency build satis
+helm package satis --destination docs
+
 helm repo index docs --url https://lestatv.github.io/charts/

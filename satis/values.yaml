@@ -1,0 +1,39 @@
+
+# Main domain of the cluster.
+# If using ambassador, subdomains of this domain will be created automatically for each environment.
+clusterDomain: "appdev.american.bible"
+
+# An optional human-readable label for the environment, defaults to the release name.
+# We typically pass the branch name when we build dedicated environments per branch.
+# This name is mainly used to create nice subdomains for each environment.
+environmentName: ""
+
+# The app label added to our Kubernetes resources.
+app: satis
+
+# How many instances of the Drupal pod should be in our Kubernetes deployment.
+# A single pod (the default value) is good for development environments to minimise resource usage.
+# Multiple pods make sense for high availability.
+replicas: 1
+
+satis:
+  name: satis
+  tier: web
+  type: ClusterIP
+  url: http://my.host.com/
+  internalPort: 80
+  externalPort: 80
+  secret: 88cd0844744e3109d5a7c0d0c8976655
+
+composer:
+  gitlab_token:
+  gitlab_host: gitlab.americanbible.org
+
+php:
+  image: 'you need to pass in a value for satis.image to your helm chart'
+  # The Kubernetes resources for the php containers.
+  # These values are optimised for development environments.
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128M

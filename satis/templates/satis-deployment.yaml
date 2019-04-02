@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-satis
+  labels:
+    {{- include "satis.release_labels" . | nindent 4 }}
+    tier: "{{ .Values.satis.tier }}"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      {{- include "satis.release_labels" . | nindent 6 }}
+      deployment: satis
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        {{- include "satis.release_labels" . | nindent 8 }}
+        deployment: satis
+        tier: "{{ .Values.satis.tier }}"
+    spec:
+      initContainers:
+      - name: composer-add-gitlab-key
+        {{- include "satis.satis-container" . | nindent 8}}
+        command:
+        - composer
+        - config
+        - -g
+        - gitlab-token.{{ .Values.composer.gitlab_host }}
+        - {{ .Values.composer.gitlab_token }}
+        volumeMounts:
+          {{- include "satis.volumeMounts" . | nindent 10 }}
+      containers:
+      - name: php
+        {{- include "satis.satis-container" . | nindent 8}}
+        volumeMounts:
+          {{- include "satis.volumeMounts" . | nindent 10 }}
+        livenessProbe:
+          tcpSocket:
+            port: 9000
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - curl -f http://localhost:80/ping
+          periodSeconds: 3
+        resources:
+          {{- .Values.php.resources | toYaml | nindent 10 }}
+
+      volumes:
+        {{- include "satis.volumes" . | nindent 8}}
+        - name: satis-server-conf
+          configMap:
+            name: {{ .Release.Name }}-satis-server-conf
+            items:
+              - key: satis_server_conf
+                path: satis_server_conf
