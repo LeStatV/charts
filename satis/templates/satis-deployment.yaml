@@ -22,25 +22,6 @@ spec:
         deployment: satis
         tier: "{{ .Values.satis.tier }}"
     spec:
-      initContainers:
-      - name: composer-add-gitlab-token
-        {{- include "satis.satis-container" . | nindent 8}}
-        command:
-        - composer
-        - config
-        - -g
-        - gitlab-token.{{ .Values.composer.gitlab_host }}
-        - {{ .Values.composer.gitlab_token }}
-      - name: composer-add-gitlab-domains
-        {{- include "satis.satis-container" . | nindent 8}}
-        command:
-        - composer
-        - config
-        - -g
-        - gitlab-domains
-        - {{ .Values.composer.gitlab_host }}
-        volumeMounts:
-          {{- include "satis.volumeMounts" . | nindent 10 }}
       containers:
       - name: php
         {{- include "satis.satis-container" . | nindent 8}}
@@ -58,6 +39,15 @@ spec:
           periodSeconds: 3
         resources:
           {{- .Values.php.resources | toYaml | nindent 10 }}
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - "sh"
+                - "-c"
+                - >
+                  composer config -g gitlab-token.{{ .Values.composer.gitlab_host }} {{ .Values.composer.gitlab_token }}
+                  composer config -g gitlab-domains {{ .Values.composer.gitlab_host }}
 
       volumes:
         {{- include "satis.volumes" . | nindent 8}}
