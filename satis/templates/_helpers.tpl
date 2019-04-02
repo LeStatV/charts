@@ -20,7 +20,7 @@ release: {{ .Release.Name }}
 {{- end -}}
 
 {{- define "satis.satis-container" -}}
-image: {{ .Values.satis.image | quote }}
+image: {{ .Values.php.image | quote }}
 env: {{ include "satis.env" . }}
 ports:
   - containerPort: 9000

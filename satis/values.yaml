@@ -26,7 +26,7 @@ satis:
   secret: 88cd0844744e3109d5a7c0d0c8976655
 
 composer:
-  gitlab_token:
+  gitlab_token: 88cd0844744e3109d5a7c0d0c8976655
   gitlab_host: gitlab.americanbible.org
 
 php:
