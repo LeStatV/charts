@@ -31,7 +31,7 @@ spec:
         - -g
         - gitlab-token.{{ .Values.composer.gitlab_host }}
         - {{ .Values.composer.gitlab_token }}
-        - &&
+        - "&&"
         - composer
         - config
         - -g
