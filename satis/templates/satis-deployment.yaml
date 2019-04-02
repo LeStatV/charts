@@ -28,7 +28,8 @@ spec:
         command:
         - /bin/sh
         - -c
-        args: "composer config -g gitlab-token.{{ .Values.composer.gitlab_host }} {{ .Values.composer.gitlab_token }} && composer config -g gitlab-domains {{ .Values.composer.gitlab_host }}"
+        args:
+        - "composer config -g gitlab-token.{{ .Values.composer.gitlab_host }} {{ .Values.composer.gitlab_token }} && composer config -g gitlab-domains {{ .Values.composer.gitlab_host }}"
         volumeMounts:
           {{- include "satis.volumeMounts" . | nindent 10 }}
       containers:
