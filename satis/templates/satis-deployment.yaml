@@ -53,9 +53,3 @@ spec:
 
       volumes:
         {{- include "satis.volumes" . | nindent 8}}
-        - name: satis-server-conf
-          configMap:
-            name: {{ .Release.Name }}-satis-server-conf
-            items:
-              - key: satis_server_conf
-                path: satis_server_conf
