@@ -22,6 +22,12 @@ data:
               "url": "git@gitlab.americanbible.org:ts-eng/abs_contact.git"
           }
       ],
+      "repositories": [
+          {
+              "type": "gitlab",
+              "url": "git@gitlab.americanbible.org:ggolovenko/pulse_material.git"
+          }
+      ],
       "require-all":true,
       "require-dependencies":true,
       "require-dev-dependencies":true,
